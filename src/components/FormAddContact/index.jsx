@@ -12,13 +12,15 @@ export const FormAddContact = () => {
 
     const form = e.target;
     const name = e.target.elements.name.value;
-    const phone = e.target.elements.number.value;
+    const number = e.target.elements.number.value;
 
     if (contacts.some(({ name }) => name === e.target.elements.name.value)) {
       return alert(`${e.target.elements.name.value} is already in contacts`);
     }
 
-    dispatch(addContact({ name: name, phone: phone }));
+    console.log('name', name)
+    console.log('number', number)
+    dispatch(addContact({ name: name, number: number }));
     form.reset();
   };
 
@@ -44,7 +46,7 @@ export const FormAddContact = () => {
         id="inputNumber"
         name="number"
         placeholder="number"
-        value={contacts.phone}
+        value={contacts.number}
         pattern="\+?\d{1,4}?[ .\-\s]?\(?\d{1,3}?\)?[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,9}"
         title="Numbers"
         required

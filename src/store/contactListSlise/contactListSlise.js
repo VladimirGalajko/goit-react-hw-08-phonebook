@@ -3,7 +3,8 @@ import {
   addContact,
   fetchContacts,
   deleteContact,
-} from './../../store/contactListSlise/contactsAsyncThunk';
+} from './contactsAsyncThunk';
+//from './../../store/contactListSlise/contactsAsyncThunk';
 import {
   getItems,
   setItems,
