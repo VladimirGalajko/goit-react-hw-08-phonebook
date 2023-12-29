@@ -18,8 +18,6 @@ export const FormAddContact = () => {
       return alert(`${e.target.elements.name.value} is already in contacts`);
     }
 
-    console.log('name', name)
-    console.log('number', number)
     dispatch(addContact({ name: name, number: number }));
     form.reset();
   };

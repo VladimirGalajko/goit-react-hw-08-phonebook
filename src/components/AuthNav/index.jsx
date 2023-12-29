@@ -1,5 +1,6 @@
 import { NavLink as BaseNavLink } from "react-router-dom";
 import styled from 'styled-components';
+import { Div } from "./AuthNav.styled";
 
 const NavLink = styled(BaseNavLink)`
 display: flex;
@@ -28,13 +29,13 @@ display: flex;
 
 export const AuthNav = () => {
   return (
-    <div>
+    <Div>
       <NavLink  to="/register">
         Register
       </NavLink>
       <NavLink  to="/login">
         Log In
       </NavLink>
-    </div>
+    </Div>
   );
 };

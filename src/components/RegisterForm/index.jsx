@@ -1,6 +1,5 @@
 import { useDispatch } from 'react-redux';
-
-import { Form, Label } from './RegisterForm.styled';
+import { Button, Form, Input, Label } from './RegisterForm.styled';
 import { registerUser } from 'store/authSlise/authAsyncThunks';
 
 export const RegisterForm = () => {
@@ -23,17 +22,17 @@ export const RegisterForm = () => {
     <Form onSubmit={handleSubmit} autoComplete="off">
       <Label >
         Username
-        <input type="text" name="name" />
+        <Input type="text" name="name" />
       </Label>
       <Label >
         Email
-        <input type="email" name="email" />
+        <Input type="email" name="email" />
       </Label>
       <Label >
         Password
-        <input type="password" name="password" />
+        <Input type="password" name="password" />
       </Label>
-      <button type="submit">Register</button>
+      <Button type="submit">Register</Button>
     </Form>
   );
 };

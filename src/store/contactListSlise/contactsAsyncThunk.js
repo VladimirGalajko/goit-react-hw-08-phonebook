@@ -1,28 +1,29 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-// import * as api from 'myApi/apiContacts';
-// toastify
-// import { toast } from 'react-toastify';
-// import { toastifyOptions } from 'utils/toastifyOptions';
 
  import * as api from '../../myApi/apiContacts';
 
 export const fetchContacts = createAsyncThunk(
-  'contacts/getAll', // самостійно створює actions.fetchContactsPending, actions.fetchContactsFulfilled, actions.fetchContactsRejected
+  'contacts/getAll', 
   async (_, thunkAPI) => {
     try {
       const { data } = await api.getAllContacts();
-      console.log('fetchContacts data', data)
+   
       return data;
     } catch ({ response }) {
+      toast.error(`${response.data.message}`, {    
+        autoClose: 2000
+      });
       return thunkAPI.rejectWithValue(
-        `Ooops! Wrong... Try again or update browser`
+        `Wrong... fetchContacts`
       );
     }
   }
 );
 
-// ф-ція перевірка на дублікати
+
 const isDublicate = (contacts, { name, number }) => {
   const normalizedName = name.toLowerCase().trim();
   const normalizedNumber = number.trim();
@@ -37,28 +38,32 @@ const isDublicate = (contacts, { name, number }) => {
 
 export const addContact = createAsyncThunk(
   'contacts/addContact',
-  async (data, { rejectWithValue }) => {
-    console.log('addContact data', data)
+  async (data, { rejectWithValue }) => {   
     try {
       const { data: result } = await api.addOneContact(data);
-      // toast.success('Add contact', {
-      //   position: 'bottom-right',
-      // });
+      toast.success('Add contact', {    
+        autoClose: 750
+      });
       return result;
     } catch ({ response }) {
-      return rejectWithValue(`Ooops! Wrong... Try again or update browser`);
+      toast.error(`${response.data.message}`, {    
+        autoClose: 2000
+      });
+      return rejectWithValue(`Wrong...addContact `);
     }
   },
-  // щоб зробити перевірку до запиту на дублікати - передаємо 3-ім аргументом object with condition
+  
   {
     condition: (data, { getState }) => {
       const {
         contacts: { items },
       } = getState();
 
-      if (isDublicate(items, data)) {
-        // toast.error(`This contact is already in contacts`, toastifyOptions);
-        return false; // якщо false  - запит преривається і не відбувається, в іншому випадку - запит продовжиться
+      if (isDublicate(items, data)) {        
+        toast.error(`This contact is already in contacts`,{    
+          autoClose: 750
+        });
+        return false; 
       }
     },
   }
@@ -69,28 +74,15 @@ export const deleteContact = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       await api.deleteContact(id);
-      // toast.success('Contact delete', {
-      //   position: 'bottom-right',
-      // });
+      toast.success('Contact delete',{    
+        autoClose: 750
+      });
       return id;
     } catch ({ response }) {
-      return rejectWithValue(`Ooops! Wrong... Try again or update browser`);
+      toast.error(`${response.data.message}`, {    
+        autoClose: 2000
+      });
+      return rejectWithValue(`Wrong... deleteContact`);
     }
   }
 );
-
-// export const changeContact = createAsyncThunk(
-//   'contacts/editContact',
-//   async (data, { rejectWithValue }) => {
-//     try {
-//       const { data: result } = await api.editContact(data);
-//       // toast.success('Contact update', {
-//       //   position: 'bottom-right',
-//       // });
-//       // console.log(result);
-//       return result;
-//     } catch ({ response }) {
-//       return rejectWithValue(`Ooops! Wrong... Try again or update browser`);
-//     }
-//   }
-// );

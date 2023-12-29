@@ -4,7 +4,7 @@ import {
   fetchContacts,
   deleteContact,
 } from './contactsAsyncThunk';
-//from './../../store/contactListSlise/contactsAsyncThunk';
+
 import {
   getItems,
   setItems,

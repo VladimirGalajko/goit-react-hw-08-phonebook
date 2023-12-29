@@ -1,6 +1,7 @@
 import { useAuth } from 'hooks';
 import { NavLink as BaseNavLink } from "react-router-dom";
 import styled from 'styled-components';
+import { Nav } from './Navigation.styled';
 
 const NavLink = styled(BaseNavLink)`
 display: flex;
@@ -31,7 +32,7 @@ export const Navigation = () => {
   const { isLoggedIn } = useAuth();
 
   return (
-    <nav>
+    <Nav>
       <NavLink  to="/">
         Home
       </NavLink>
@@ -40,6 +41,6 @@ export const Navigation = () => {
           Contacts
         </NavLink>
       )}
-    </nav>
+    </Nav>
   );
 };

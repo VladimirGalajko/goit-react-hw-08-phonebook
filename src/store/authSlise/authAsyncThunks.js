@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { userLogin, userSignUp, userLogout, userCurrent } from 'myApi/apiAuth';
 
 export const registerUser = createAsyncThunk(
@@ -7,14 +8,17 @@ export const registerUser = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const result = await userSignUp(data);
-      toast.success('Successfully registered!', {
-        position: 'bottom-right',
-        autoClose: 1500,
-      });
-      console.log('register:', result);
+      toast.success('Successfully registered!', {    
+        autoClose: 750
+      }); 
       return result;
     } catch ({ response }) {
-      return rejectWithValue(` registerUser Ooops! Wrong... Try again or update browser`);
+        console.log('response', response)
+        toast.error(`${response.data.name} status:${response.status }`, {    
+            autoClose: 2000
+          }); 
+      
+      return rejectWithValue(`Wrong...registerUser`);
     }
   }
 );
@@ -24,14 +28,15 @@ export const logInUser = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const result = await userLogin(data);
-    //   toast.success('Successfully logged!', {
-    //     position: 'bottom-right',
-    //     autoClose: 1500,
-    //   });
-      console.log('login:', result);
+      toast.success('Successfully logged!',{    
+        autoClose: 750
+      });  
       return result;
     } catch (error) {
-      return rejectWithValue(` logInUser Ooops! Wrong... Try again or update browser`);
+        toast.error(`${error.message}`, {    
+            autoClose: 2000
+          }); 
+      return rejectWithValue(`Wrong... logInUser`);
     }
   }
 );
@@ -41,14 +46,16 @@ export const logOutUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await userLogout();
-    //   toast.success('Successfully logout!', {
-    //     position: 'bottom-right',
-    //     autoClose: 1500,
-    //   });
-      console.log('logout:', data);
+      toast.success('Successfully logout!',{    
+        autoClose: 750
+      });
+
       return data;
     } catch (error) {
-      return rejectWithValue(` logOutUser Ooops! Wrong... Try again or update browser`);
+        toast.error(`${error.message}`, {    
+            autoClose: 2000
+          }); 
+      return rejectWithValue(`Wrong... logOutUser`);
     }
   }
 );
@@ -61,10 +68,12 @@ export const getCurrentUser = createAsyncThunk(
         auth: { token },
       } = getState();
       const { data } = await userCurrent(token);
-      console.log('currentUser:', data);
       return data;
     } catch ({ response }) {
-      return rejectWithValue(`Ooops! Wrong... Try again or update browser`);
+        toast.error(`${response.data.message}`, {    
+            autoClose: 2000
+          });
+      return rejectWithValue(`Wrong... getCurrentUser`);
     }
   },
   {
@@ -79,26 +88,3 @@ export const getCurrentUser = createAsyncThunk(
     },
   }
 );
-
-// export const refreshUser = createAsyncThunk(
-//     'auth/refresh',
-//     async (_, thunkAPI) => {
-//       // Reading the token from the state via getState()
-//       const state = thunkAPI.getState();
-//       const persistedToken = state.auth.token;
-
-//       if (persistedToken === null) {
-//         // If there is no token, exit without performing any request
-//         return thunkAPI.rejectWithValue('Unable to fetch user');
-//       }
-
-//       try {
-//         // If there is a token, add it to the HTTP header and perform the request
-//         setAuthHeader(persistedToken);
-//         const res = await axios.get('/users/me');
-//         return res.data;
-//       } catch (error) {
-//         return thunkAPI.rejectWithValue(error.message);
-//       }
-//     }
-//   );
